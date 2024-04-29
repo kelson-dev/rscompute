@@ -36,7 +36,7 @@ impl GpuMappedMemory for MatrixNxM {
             std::ptr::copy_nonoverlapping(
                 self.data.as_ptr(),
                 pointer.ptr,
-                std::mem::size_of::<f32>() * self.data.len());
+                self.data.len());
             pointer.unmap();
         }
 
@@ -50,7 +50,7 @@ impl GpuMappedMemory for MatrixNxM {
             std::ptr::copy_nonoverlapping(
                 pointer.ptr,
                 self.data.as_mut_ptr(),
-                std::mem::size_of::<f32>() * self.data.len());
+                self.data.len());
             pointer.unmap();
         };
         ash::vk::Result::SUCCESS
