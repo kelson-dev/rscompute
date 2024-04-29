@@ -1,0 +1,24 @@
+#version 450
+// take two 5x5 matrices as input
+// and one 5x5 matrix as output
+layout(local_size_x = 1, local_size_y = 1) in;
+layout(set = 0, binding = 0) readonly buffer A { float a[]; };
+layout(set = 0, binding = 1) readonly buffer B { float b[]; };
+// output to buffer C
+layout(set = 0, binding = 2) writeonly buffer C { float c[]; };
+
+layout (push_constant) uniform PushConstants {
+    uint acbr;
+    uint ar;
+    uint bc;
+} pc;
+
+void main() {
+    uint i = gl_GlobalInvocationID.x;
+    uint j = gl_GlobalInvocationID.y;
+    float sum = 0.0;
+    for (uint k = 0; k < pc.acbr; k++) {
+        sum += a[(i * pc.acbr) + k] * b[(k * pc.bc) + j];
+    }
+    c[(i * pc.ar) + j] = sum;
+}
