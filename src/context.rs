@@ -15,11 +15,17 @@ pub struct VkCtx {
 
 impl VkCtx {
     pub fn destroy(&self) {
+        println!("Destroying VkCtx");
         unsafe {
+            println!("Destroying descriptor pool");
             self.device.destroy_descriptor_pool(self.descriptor_pool, None);
+            println!("Destroying command buffers");
             self.device.free_command_buffers(self.command_pool, &[self.command_buffer]);
+            println!("Destroying command pool");
             self.device.destroy_command_pool(self.command_pool, None);
+            println!("Destroying device");
             self.device.destroy_device(None);
+            println!("Destroying instance");
             self.instance.destroy_instance(None);
         }
     }
@@ -68,8 +74,10 @@ impl VkCtx {
             ..Default::default()
         };
 
+        println!("Creating instance");
         let instance = unsafe { entry.create_instance(&create_info, None) }.expect("Failed to create instance");
 
+        println!("Creating PhysicalDevice");
         let physical_device = unsafe { instance.enumerate_physical_devices() }
             .expect("Failed to enumerate physical devices")
             .into_iter()

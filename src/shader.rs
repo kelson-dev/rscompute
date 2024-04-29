@@ -24,18 +24,24 @@ pub struct ShaderExecutionContext {
 impl ShaderExecutionContext {
     pub fn destroy(&self, device: &ash::Device, descriptor_set_pool: &vk::DescriptorPool) {
         unsafe {
+            println!("Destroying buffers");
             for buffer in self.write_buffers.iter() {
                 buffer.destroy(device);
             }
             for buffer in self.read_buffers.iter() {
                 buffer.destroy(device);
             }
+            println!("Destroying pipeline");
             device.destroy_pipeline(self.pipeline, None);
+            println!("Destroying pipeline layout");
             device.destroy_pipeline_layout(self.pipeline_layout, None);
+            println!("Freeing descriptor sets");
             device.free_descriptor_sets(*descriptor_set_pool, &[self.descriptor_set]);
+            println!("Destroying descriptor set layouts");
             for layout in self.descriptor_set_layouts.iter() {
                 device.destroy_descriptor_set_layout(*layout, None);
             }
+            println!("Destroying shader module");
             device.destroy_shader_module(self.shader_module, None);
         }
     }
@@ -233,7 +239,7 @@ pub trait ComputeShader<TPushConstants : Sized> {
             ctx.device.destroy_fence(fence, None);
         }
 
-        thread::sleep(Duration::from_secs(1));
+        //thread::sleep(Duration::from_secs(1));
 
         vk::Result::SUCCESS
     }
