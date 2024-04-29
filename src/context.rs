@@ -17,13 +17,13 @@ impl VkCtx {
     pub fn destroy(&self) {
         println!("Destroying VkCtx");
         unsafe {
-            println!("Destroying descriptor pool");
+            println!("Destroying descriptor pool {:?}", self.descriptor_pool);
             self.device.destroy_descriptor_pool(self.descriptor_pool, None);
-            println!("Destroying command buffers");
+            println!("Destroying command buffers {:?}", self.command_buffer);
             self.device.free_command_buffers(self.command_pool, &[self.command_buffer]);
-            println!("Destroying command pool");
+            println!("Destroying command pool {:?}", self.command_pool);
             self.device.destroy_command_pool(self.command_pool, None);
-            println!("Destroying device");
+            println!("Destroying device {:?}", self.device.handle());
             self.device.destroy_device(None);
             println!("Destroying instance");
             self.instance.destroy_instance(None);
@@ -74,16 +74,19 @@ impl VkCtx {
             ..Default::default()
         };
 
-        println!("Creating instance");
+        print!("Creating instance... ");
         let instance = unsafe { entry.create_instance(&create_info, None) }.expect("Failed to create instance");
-
-        println!("Creating PhysicalDevice");
+        println!("handle is {:?}", instance.handle());
+        print!("Getting a Physical Device... ");
         let physical_device = unsafe { instance.enumerate_physical_devices() }
             .expect("Failed to enumerate physical devices")
             .into_iter()
             .next()
             .expect("No physical devices found");
+        println!("found {:?}", physical_device);
 
+
+        print!("Creating device... ");
         let device = unsafe {
             let queue_create_info = vk::DeviceQueueCreateInfo {
                 queue_family_index: 0,
@@ -98,9 +101,13 @@ impl VkCtx {
             };
             instance.create_device(physical_device, &device_create_info, None)
         }.expect("Failed to create device");
+        println!("handle is {:?}", device.handle());
 
+        print!("Getting a queue... ");
         let queue = unsafe { device.get_device_queue(0, 0) };
+        println!("got queue {:?}", queue);
 
+        print!("Creating command pool... ");
         let command_pool = unsafe {
             let command_pool_create_info = vk::CommandPoolCreateInfo {
                 queue_family_index: 0,
@@ -108,7 +115,9 @@ impl VkCtx {
             };
             device.create_command_pool(&command_pool_create_info, None)
         }.expect("Failed to create command pool");
+        println!("handle is {:?}", command_pool);
 
+        print!("Creating command buffer... ");
         let command_buffer = unsafe {
             let command_buffer_allocate_info = vk::CommandBufferAllocateInfo {
                 command_pool,
@@ -118,7 +127,8 @@ impl VkCtx {
             };
             device.allocate_command_buffers(&command_buffer_allocate_info)
         }.expect("Failed to allocate command buffer")[0];
-
+        println!("handle is {:?}", command_buffer);
+        print!("Creating descriptor pool... ");
         let descriptor_pool = unsafe {
             let pool_sizes = [
                 vk::DescriptorPoolSize {
@@ -136,6 +146,7 @@ impl VkCtx {
             };
             device.create_descriptor_pool(&descriptor_pool_create_info, None)
         }.expect("Failed to create descriptor pool");
+        println!("handle is {:?}", descriptor_pool);
 
         Ok(VkCtx {
             command_buffer,
@@ -149,6 +160,7 @@ impl VkCtx {
     }
 
     pub fn create_shader_module(&self, source: Vec<u32>) -> Result<vk::ShaderModule, vk::Result> {
+        println!("Creating shader module");
         let shader_info = vk::ShaderModuleCreateInfo {
             code_size: source.len() * 4,
             p_code: source.as_ptr(),

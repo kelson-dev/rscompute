@@ -65,6 +65,7 @@ impl LayoutDescription {
 
             ctx.device.create_buffer(&buffer_info, None)
         }?;
+        println!("Created buffer {:?} for binding {}", buffer, self.binding);
 
         let memory = unsafe {
             let mem_requirements = unsafe {
@@ -87,7 +88,8 @@ impl LayoutDescription {
 
             ctx.device.allocate_memory(&memory_info, None)
         }?;
-
+        println!("Allocated memory {:?} for buffer {:?}", memory, buffer);
+        println!("Binding buffer {:?} to memory {:?}", buffer, memory);
         unsafe {
             ctx.device.bind_buffer_memory(buffer, memory, 0)
         }?;

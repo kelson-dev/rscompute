@@ -12,6 +12,7 @@ pub struct LinkedMemory {
 impl LinkedMemory {
     pub fn destroy(&self, device: &ash::Device) {
         unsafe {
+            println!("Destroying buffer {:?} and freeing memory {:?}", self.buffer, self.memory);
             device.destroy_buffer(self.buffer, None);
             device.free_memory(self.memory, None);
         }
@@ -19,6 +20,7 @@ impl LinkedMemory {
 
     pub fn get_mapped_pointer<'a, T>(&self, ctx: &VkCtx, length: u64) -> MappedMemoryPointer<'a, T> {
         let ptr = unsafe {
+            println!("Mapping memory {:?}", self.memory);
             ctx.device.map_memory(
                 self.memory,
                 0,
@@ -45,6 +47,7 @@ pub struct MappedMemoryPointer<'a, T> {
 impl<'a, T> MappedMemoryPointer<'a, T> {
     pub fn unmap(&self) {
         unsafe {
+            println!("Unmapping memory {:?}", self.memory);
             self.device.unmap_memory(self.memory)
         };
     }
