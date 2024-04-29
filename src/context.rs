@@ -148,7 +148,7 @@ impl VkCtx {
         }.expect("Failed to create descriptor pool");
         println!("handle is {:?}", descriptor_pool);
 
-        Ok(VkCtx {
+        let ctx = VkCtx {
             command_buffer,
             command_pool,
             device,
@@ -156,7 +156,9 @@ impl VkCtx {
             instance,
             queue,
             descriptor_pool,
-        })
+        };
+
+        Ok(ctx)
     }
 
     pub fn create_shader_module(&self, source: Vec<u32>) -> Result<vk::ShaderModule, vk::Result> {

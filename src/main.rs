@@ -7,8 +7,6 @@ pub mod demo;
 pub mod shader;
 pub mod data;
 
-use crate::demo::multiply5x5_shader::{Matrix5x5MultiplicationShader};
-use crate::demo::matrix5x5::{Matrix5x5};
 use crate::context::VkCtx;
 use crate::shader::ComputeShader;
 

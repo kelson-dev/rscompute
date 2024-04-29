@@ -6,8 +6,6 @@ use ash::vk::{CommandBufferBeginInfo, ComputePipelineCreateInfo, DescriptorBuffe
 use vk::{DescriptorSet, DescriptorSetLayout, Pipeline, ShaderModule};
 use crate::context::VkCtx;
 use crate::data::{LinkedMemory, GpuMappedMemory};
-use crate::demo::matrix5x5::Matrix5x5;
-use crate::demo::multiply5x5_shader::Matrix5x5MultiplicationShader;
 use crate::demo::multiply_nx_m_shader::MatrixNxMShader;
 
 #[derive(Clone, Debug)]
@@ -237,7 +235,7 @@ pub trait ComputeShader<TPushConstants : Sized> {
                 p_command_buffers: &command_buffer,
                 ..Default::default()
             }], fence);
-            ctx.device.wait_for_fences(&[fence], true, std::u64::MAX);
+            ctx.device.wait_for_fences(&[fence], true, u64::MAX);
             ctx.device.destroy_fence(fence, None);
         }
 

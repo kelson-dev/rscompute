@@ -12,8 +12,6 @@ use crate::context::VkCtx;
 use crate::shader::{ComputeShader, LayoutDescription, LayoutDescriptorIndex, ShaderExecutionContext};
 use crate::data::{GpuMappedMemory, LinkedMemory};
 use shaderc;
-use crate::demo::matrix5x5::Matrix5x5;
-use crate::demo::multiply5x5_shader::Matrix5x5MultiplicationShader;
 use crate::shader::LayoutDescriptorIndex::{ReadIndex, WriteIndex};
 
 pub struct MatrixNxMShader {

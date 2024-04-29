@@ -1,10 +1,10 @@
 Creating Vulkan context
-Creating instance... handle is 0x56d3b286d3b0
-Getting a Physical Device... found 0x56d3b29a5950
-Creating device... handle is 0x56d3b29d6f10
-Getting a queue... got queue 0x56d3b29a4ba0
+Creating instance... handle is 0x59e9eaa5c3b0
+Getting a Physical Device... found 0x59e9eab94a30
+Creating device... handle is 0x59e9eabc5ff0
+Getting a queue... got queue 0x59e9eab93c80
 Creating command pool... handle is 0xfd5b260000000001
-Creating command buffer... handle is 0x56d3b2af4050
+Creating command buffer... handle is 0x59e9eaec2ad0
 Creating descriptor pool... handle is 0xfab64d0000000002
 Creating shader
 Building shader context
@@ -35,23 +35,4 @@ Destroying buffer 0xe88693000000000c and freeing memory 0xcad092000000000d
 Destroying pipeline
 Destroying pipeline layout
 Freeing descriptor sets
-Destroying descriptor set layouts
-Destroying shader module
-Multiplied matrices:
-|      1      1  |
-|      2      2  |
-|      3      3  |
-and
-|      1      1      1  |
-|      2      2      2  |
-to get
-|      3      3      3  |
-|      6      6      6  |
-|      9      9      9  |
-Destroying VkCtx
-Destroying descriptor pool 0xfab64d0000000002
-Destroying command buffers 0x56d3b2af4050
-Destroying command pool 0xfd5b260000000001
-Destroying device 0x56d3b29d6f10
-corrupted double-linked list
-Aborted (core dumped)
+Segmentation fault (core dumped)
